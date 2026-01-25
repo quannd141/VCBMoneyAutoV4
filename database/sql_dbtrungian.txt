@@ -1,0 +1,166 @@
+USE [DBTRUNGGIAN]
+GO
+
+/****** Object:  Table [dbo].[PAYORDER]    Script Date: 1/25/2026 10:45:34 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[PAYORDER](
+	[SOGD] [nvarchar](20) NOT NULL,
+	[NGAY] [smalldatetime] NOT NULL,
+	[TKNO] [nvarchar](15) NOT NULL,
+	[LNT] [nvarchar](3) NOT NULL,
+	[SOTIEN] [float] NOT NULL,
+	[UUTIEN] [smallint] NULL,
+	[TKNH] [nvarchar](35) NULL,
+	[TENNH] [nvarchar](144) NULL,
+	[DCNH] [nvarchar](70) NULL,
+	[PHI] [nvarchar](3) NULL,
+	[NHNH] [nvarchar](100) NULL,
+	[ND] [nvarchar](140) NULL,
+	[TENNRL] [nvarchar](144) NULL,
+	[DCNRL] [nvarchar](180) NULL,
+	[SOTK_NRL] [nvarchar](34) NULL,
+	[DC_NRL] [nvarchar](180) NULL,
+	[BEN_IDNO] [nvarchar](35) NULL,
+	[BEN_ID_ISSUE_DATE] [nvarchar](20) NULL,
+	[BEN_ID_ISSUE_PLACE] [nvarchar](100) NULL,
+	[BANK_TO_BANK] [bit] NULL,
+	[BANK_TO_BANK_SBV] [bit] NULL,
+	[INQUIRY_BEN_NAME] [bit] NULL,
+	[UPVCBMONEY] [smallint] NULL,
+	[ErrCode] [nvarchar](3) NULL,
+	[ErrDes] [nvarchar](250) NULL,
+	[upDatetime] [nvarchar](100) NULL,
+	[BICCODE_NHNH] [nvarchar](50) NULL,
+	[BICNAME_NHNH] [nvarchar](100) NULL,
+	[BANKCODE_NHNH] [nvarchar](50) NULL,
+	[BANKNAME_NHNH] [nvarchar](100) NULL,
+	[TENDC_NHNH] [nvarchar](180) NULL,
+	[HC_NRL] [nvarchar](50) NULL,
+	[CMT_NRL] [nvarchar](50) NULL,
+	[DKKD_NRL] [nvarchar](70) NULL,
+	[MAQG_NRL] [nvarchar](50) NULL,
+	[BICCODE_NHTG] [nvarchar](50) NULL,
+	[BICNAME_NHTG] [nvarchar](100) NULL,
+	[BANKCODE_NHTG] [nvarchar](50) NULL,
+	[BANKNAME_NHTG] [nvarchar](100) NULL,
+	[TENDC_NHTG] [nvarchar](180) NULL,
+	[TTGUI_NNL] [nvarchar](200) NULL,
+	[CHECKS] [numeric](18, 0) NULL,
+	[TENTKNO] [nvarchar](100) NULL,
+	[DCNGL] [nvarchar](140) NULL,
+	[TG_Status] [nvarchar](2) NULL,
+	[ChkS] [nvarchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SOGD] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[PAYORDER] ADD  DEFAULT ('VND') FOR [LNT]
+GO
+
+
+USE [DBTRUNGGIAN]
+GO
+
+/****** Object:  Table [dbo].[DOMESTIC_RESULT]    Script Date: 1/25/2026 10:45:29 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[DOMESTIC_RESULT](
+	[ID] [bigint] IDENTITY(1,1) NOT NULL,
+	[CUSTOMER_CODE] [nvarchar](20) NOT NULL,
+	[TRANS_REF] [nvarchar](50) NULL,
+	[DEBIT_ACCOUNT] [nvarchar](20) NULL,
+	[DEBIT_NAME] [nvarchar](200) NULL,
+	[AMOUNT] [decimal](18, 2) NULL,
+	[CURRENCY] [nvarchar](3) NULL,
+	[CONTENT] [nvarchar](500) NULL,
+	[BEN_ACCOUNT_NO] [nvarchar](50) NOT NULL,
+	[BEN_ACCOUNT_NAME] [nvarchar](200) NULL,
+	[BEN_BANK] [nvarchar](150) NOT NULL,
+	[BEN_BANK_CODE] [nvarchar](15) NOT NULL,
+	[BEN_CURRENCY] [nvarchar](3) NOT NULL,
+	[BEN_ADDRESS] [nvarchar](200) NULL,
+	[BEN_IDNO] [nvarchar](35) NULL,
+	[CHARGE] [nvarchar](10) NULL,
+	[VALUE_DATE] [date] NULL,
+	[PRIORITY] [nvarchar](10) NULL,
+	[BANK_TRAN_REF] [nvarchar](50) NULL,
+	[CREDIT_AMOUNT] [decimal](20, 2) NULL,
+	[FEE_AMOUNT] [decimal](20, 2) NULL,
+	[VAT_AMOUNT] [decimal](20, 2) NULL,
+	[STATUS] [char](3) NOT NULL,
+	[ERROR_CODE] [nvarchar](10) NULL,
+	[ERROR_MESSAGE] [nvarchar](500) NULL,
+	[ERROR_SUGGESTION] [nvarchar](500) NULL,
+	[IMPORTED_TIME] [datetime] NOT NULL,
+	[PROCESSED_TIME] [datetime] NULL,
+	[BANK_PROCESSED_TIME] [datetime] NULL,
+	[BANK_REMARK] [nvarchar](500) NULL,
+	[REV1] [nvarchar](500) NULL,
+	[REV2] [nvarchar](500) NULL,
+	[REV3] [nvarchar](500) NULL,
+	[REV4] [nvarchar](500) NULL,
+	[REV5] [nvarchar](500) NULL,
+	[REV_NUM1] [decimal](18, 2) NULL,
+	[REV_NUM2] [decimal](18, 2) NULL,
+	[REV_DATE1] [datetime] NULL,
+	[REV_DATE2] [datetime] NULL,
+	[REV_AMT1] [decimal](18, 2) NULL,
+	[ERRNUM] [int] NULL,
+	[ERRDES] [nvarchar](500) NULL,
+	[UPCORE] [int] NULL,
+	[CREATED_DATE] [datetime] NOT NULL,
+	[CREATED_BY] [nvarchar](64) NOT NULL,
+	[UPDATED_DATE] [datetime] NOT NULL,
+	[UPDATED_BY] [nvarchar](64) NOT NULL,
+	[CHECKED_BY] [nvarchar](64) NULL,
+	[CHECKED_DATE] [datetime] NULL,
+	[CHECKED_NOTE] [nvarchar](1500) NULL,
+	[VERIFIED_BY] [nvarchar](64) NULL,
+	[VERIFIED_DATE] [datetime] NULL,
+	[APPROVED_BY] [nvarchar](64) NULL,
+	[APPROVED_DATE] [datetime] NULL,
+	[APPROVED_NOTE] [nvarchar](1500) NULL,
+	[PCTIME] [datetime] NULL,
+	[TELLER_ID] [nvarchar](10) NULL,
+	[HOSTDATE] [datetime] NULL,
+	[VDATE] [datetime] NULL,
+	[SEQUENCE_NO] [int] NULL,
+	[RTL_REF] [nvarchar](50) NULL,
+ CONSTRAINT [PK_DOMESTIC_RESULT] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[DOMESTIC_RESULT] ADD  DEFAULT ('201') FOR [STATUS]
+GO
+
+ALTER TABLE [dbo].[DOMESTIC_RESULT] ADD  DEFAULT (getdate()) FOR [IMPORTED_TIME]
+GO
+
+ALTER TABLE [dbo].[DOMESTIC_RESULT] ADD  DEFAULT (getdate()) FOR [CREATED_DATE]
+GO
+
+ALTER TABLE [dbo].[DOMESTIC_RESULT] ADD  DEFAULT ('SYSTEM') FOR [CREATED_BY]
+GO
+
+ALTER TABLE [dbo].[DOMESTIC_RESULT] ADD  DEFAULT (getdate()) FOR [UPDATED_DATE]
+GO
+
+ALTER TABLE [dbo].[DOMESTIC_RESULT] ADD  DEFAULT ('SYSTEM') FOR [UPDATED_BY]
+GO
+
+
