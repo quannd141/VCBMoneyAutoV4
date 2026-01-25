@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo giao dịch SWIFT MT103</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.processing {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        .info {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 Tạo Giao Dịch SWIFT MT103</h1>
+        
+        <div class="info">
+            <strong>ℹ️ Hướng dẫn:</strong> Nhập số lượng giao dịch bạn muốn tạo (từ 1 đến 20,000) và nhấn nút tải xuống.
+        </div>
+
+        <div class="input-group">
+            <label for="numTransactions">Số lượng giao dịch:</label>
+            <input type="number" id="numTransactions" value="15000" min="1" max="20000" placeholder="Nhập từ 1 đến 20,000">
+        </div>
+
+        <button onclick="generateAndDownload()">📥 Tạo và Tải Xuống File</button>
+
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        function randomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function generateAccountNumber(prefix = 'H') {
+            return prefix + String(randomInt(10000000000, 99999999999));
+        }
+
+        function generateTransactionCode() {
+            return 'TT' + String(randomInt(100000, 999999)) + '.2025';
+        }
+
+        function generateDate() {
+            const year = 25;
+            const month = String(randomInt(1, 12)).padStart(2, '0');
+            const day = String(randomInt(1, 28)).padStart(2, '0');
+            return `${year}${month}${day}`;
+        }
+
+        function generateAmount() {
+            return randomInt(1000000, 999999999);
+        }
+
+        const companyTypes = [
+            'CONG TY TNHH', 'CONG TY CO PHAN', 'CONG TY DICH VU',
+            'CONG TY SAN XUAT', 'CONG TY THUONG MAI', 'CONG TY XAY DUNG',
+            'CONG TY VAN TAI', 'CONG TY DU LICH', 'CONG TY NONG NGHIEP'
+        ];
+
+        const companyNames = [
+            'ABC', 'XYZ', 'DEF', 'GHI', 'JKL', 'MNO', 'PQR', 'STU', 'VWX', 'YZA',
+            'BCD', 'CDE', 'EFG', 'FGH', 'HIJ', 'IJK', 'KLM', 'LMN', 'NOP', 'OPQ',
+            'ALPHA', 'BETA', 'GAMMA', 'DELTA', 'EPSILON', 'ZETA', 'THETA', 'OMEGA',
+            'VIET NAM', 'DONG A', 'PHUONG NAM', 'BAC BO', 'TRUNG BO', 'NAM BO',
+            'HOANG GIA', 'THINH PHAT', 'DAI THANH', 'KIM LONG', 'MINH TRI'
+        ];
+
+        const streets = [
+            'NGUYEN HUE', 'LE LOI', 'TRAN HUNG DAO', 'HAI BA TRUNG', 'BACH DANG',
+            'NGUYEN TRAI', 'QUANG TRUNG', 'LE DUAN', 'PHAN CHU TRINH', 'HUNG VUONG',
+            'LY THUONG KIET', 'NGUYEN DINH CHIEU', 'PHAM NGU LAO', 'DONG KHOI',
+            'VO VAN KIET', 'TRAN PHU', 'DIEN BIEN PHU', 'NGUYEN VAN LINH'
+        ];
+
+        const districts = [
+            'QUAN 1', 'QUAN 2', 'QUAN 3', 'QUAN 4', 'QUAN 5', 'QUAN 6', 'QUAN 7',
+            'QUAN 8', 'QUAN 9', 'QUAN 10', 'QUAN 11', 'QUAN 12', 'QUAN BINH THANH',
+            'QUAN TAN BINH', 'QUAN PHU NHUAN', 'QUAN GO VAP', 'QUAN TAN PHU'
+        ];
+
+        const cities = [
+            'TPHCM', 'HA NOI', 'DA NANG', 'HAI PHONG', 'CAN THO', 'BIEN HOA',
+            'NHA TRANG', 'HUE', 'VUNG TAU', 'BUON MA THUOT', 'QUY NHON', 'VINH'
+        ];
+
+        const bankBranches = [
+            'VIETCOMBANK-CN CONG HOA', 'VIETCOMBANK-CN LONG BIEN', 'VIETCOMBANK-CN DONG DA',
+            'VIETCOMBANK-CN HAI BA TRUNG', 'VIETCOMBANK-CN TAN BINH', 'VIETCOMBANK-CN GO VAP',
+            'VIETCOMBANK-CN BINH THANH', 'VIETCOMBANK-CN PHU NHUAN', 'VIETCOMBANK-CN QUAN 1',
+            'AGRIBANK-CN HA NOI', 'AGRIBANK-CN TPHCM', 'AGRIBANK-CN DA NANG',
+            'BIDV-CN BA DINH', 'BIDV-CN HOAN KIEM', 'BIDV-CN CAU GIAY',
+            'VIETINBANK-CN THANH XUAN', 'VIETINBANK-CN HOANG MAI', 'SACOMBANK-CN TRUNG TAM'
+        ];
+
+        const purposes = [
+            'THANH TOAN HOP DONG', 'THANH TOAN TIEN HANG', 'HOAN TRA TIEN HANG',
+            'THANH TOAN DICH VU', 'TAM UNG HOP DONG', 'THANH LY HOP DONG',
+            'CHUYEN TIEN UNG TRUOC', 'THANH TOAN DOT 1', 'THANH TOAN DOT 2',
+            'THANH TOAN CUOI KY', 'THANH TOAN LUONG THANG', 'CHI PHI VAN CHUYEN'
+        ];
+
+        const provinces = [
+            'HA NOI', 'TPHCM', 'HAI PHONG', 'DA NANG', 'CAN THO', 'NGHE AN',
+            'THANH HOA', 'GIA LAI', 'BINH DUONG', 'DONG NAI', 'BA RIA VUNG TAU',
+            'KHANH HOA', 'LAM DONG', 'THUA THIEN HUE', 'QUANG NAM', 'QUANG NINH'
+        ];
+
+        function generateCompanyName() {
+            const type = companyTypes[randomInt(0, companyTypes.length - 1)];
+            const name = companyNames[randomInt(0, companyNames.length - 1)];
+            return `${type} ${name}`;
+        }
+
+        function generateAddress() {
+            const streetNum = randomInt(1, 999);
+            const street = streets[randomInt(0, streets.length - 1)];
+            const district = districts[randomInt(0, districts.length - 1)];
+            const city = cities[randomInt(0, cities.length - 1)];
+            return `${streetNum} ${street}, ${district}, ${city}`;
+        }
+
+        function generateTransaction() {
+            const txCode = generateTransactionCode();
+            const date = generateDate();
+            const amount = generateAmount();
+            const debitAcc = generateAccountNumber('H');
+            const debitCompany = generateCompanyName();
+            const debitAddress = generateAddress();
+            const intermediaryAcc = generateAccountNumber('', 13).substring(1);
+            const bankBranch = bankBranches[randomInt(0, bankBranches.length - 1)];
+            const creditAcc = generateAccountNumber('', 13).substring(1);
+            const creditCompany = generateCompanyName();
+            const taxCode = String(randomInt(1000000000, 9999999999)) + String(randomInt(100, 999));
+            const regDate = `20${randomInt(15, 24)}${String(randomInt(1, 12)).padStart(2, '0')}${String(randomInt(1, 28)).padStart(2, '0')}`;
+            const province = provinces[randomInt(0, provinces.length - 1)];
+            const purpose = purposes[randomInt(0, purposes.length - 1)];
+            const contractNum = String(randomInt(1, 99999)).padStart(5, '0');
+
+            return `:20:${txCode}
+:32A:${date}VND${amount}
+:50R:${debitAcc}
+:50S:${debitCompany}
+:50T:${debitAddress}
+:50K:${debitCompany} (ACC NO:${debitAcc}/ADD:${debitAddress})
+:53B:/00${intermediaryAcc}
+:57A:${bankBranch}
+:57E:
+:59:/0${creditAcc}
+${creditCompany}
+:59O:0${taxCode}
+:59P:${regDate}
+:59Q:CA ${province}
+:70:${purpose} ${contractNum}
+:71A:BEN
+:72A:N
+:72B:N
+:72C:Y
+:72D:N`;
+        }
+
+        function generateAndDownload() {
+            const num = parseInt(document.getElementById('numTransactions').value);
+            const statusDiv = document.getElementById('status');
+            
+            if (isNaN(num) || num < 1 || num > 20000) {
+                statusDiv.className = 'status';
+                statusDiv.style.display = 'block';
+                statusDiv.style.background = '#f8d7da';
+                statusDiv.style.color = '#721c24';
+                statusDiv.style.border = '1px solid #f5c6cb';
+                statusDiv.textContent = '❌ Vui lòng nhập số từ 1 đến 20,000!';
+                return;
+            }
+
+            statusDiv.className = 'status processing';
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = `⏳ Đang tạo ${num.toLocaleString('vi-VN')} giao dịch...`;
+
+            setTimeout(() => {
+                let transactions = [];
+                for (let i = 0; i < num; i++) {
+                    transactions.push(generateTransaction());
+                }
+
+                const output = transactions.join('\n');
+                const blob = new Blob([output], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `swift_transactions_${num}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                statusDiv.className = 'status success';
+                statusDiv.textContent = `✅ Thành công! Đã tải xuống ${num.toLocaleString('vi-VN')} giao dịch vào file swift_transactions_${num}.txt`;
+            }, 100);
+        }
+    </script>
+</body>
+</html>
